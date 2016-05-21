@@ -1,5 +1,7 @@
 # Hakoniwa
 
+[![Build Status](https://travis-ci.org/udzura/hakoniwa.svg?branch=master)](https://travis-ci.org/udzura/hakoniwa)
+
 Ruby on Container / helper tools with DSL for your handmade linux containers
 
 ## Installation
