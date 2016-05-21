@@ -1,0 +1,17 @@
+language: ruby
+
+rvm:
+  #- 2.0.0
+  #- 2.1.10
+  - 2.2.5
+  - 2.3.1
+
+install: bundle install --path vendor/bundle
+
+script:
+  - bundle exec rake test
+  - find lib -name '*.rb' | xargs -i ruby -wc {}
+
+notifications:
+  slack:
+    secure: DlcAxhSK3iOCu+2WrFFpQ4ePthywK1SBpTtxpk8KKu3n2ngw7oScxG5q39Y5xDNFmwnXPBffzMPHt04Jr1VRv5/QlTQtE6Erd0c/iTrMJ+hqQdKhR1KEUd00aztwi8qLbiZtqtjCwib+02M7FBkoTviHjtw0rLuFkYK7Qj7hs7WlWXkuoJuJkoycpbrv1T+/561JfZQdLQCOciJI9AkbyLgKF9BInyhp7Os0dXKNJYrPOXnapaKA6GoaVtRe1ySUKeYKvHxKZA53JPlQ4B6eqDhBmDEjqNr1sDbKWWqvhsV3NnijltvostY1wgvswxQfTuZ/qgQwCtY+eQvoSYR2+0u9mhVraDEHIYizeqhCKdasq/q2Tpwwvs6iWMTdvwa0YDHR5b3elMferoz8M1hSAge79iBFfdIl6Ho2AIogUq/0wp3JemXdnPPg7A+W3usA1KLpjEHHxeLIfGDiE/F4V+ysE7oyRmiRS0eGBf0qfG1gqamn1GpHlh98AFQdL+zcMbvBSk5SEAPfd+JsnY60y3dqfO+v4lRb3kzuGs0hs2xwccLGj1/h8tC0bnyz9MNnEQxPXYPfMULYI4O4sUHjmILph3p0QWLF3e9s3ExaH67hyLJrNgUoiwJjO0bXa+JuyQZ3vkCACxZo6oTNRL4lMVh7RFCSCFX+YKDUXfOsaT8=
