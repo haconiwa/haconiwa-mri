@@ -24,7 +24,7 @@ Or install it yourself as:
 require "hakoniwa"
 
 hakoniwa = Hakoniwa::Base.define do |config|
-  config.name "new-hakoniwa001" # to be hostname
+  config.name = "new-hakoniwa001" # to be hostname
 
   config.cgroup["cpu.shares"] = 2048
   config.cgroup["memory.limit_in_bytes"] = "256M"
