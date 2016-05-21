@@ -1,7 +1,7 @@
 module Hakoniwa
   class CGroup
     def initialize
-      @groups = []
+      @groups = {}
     end
     attr_reader :groups
 

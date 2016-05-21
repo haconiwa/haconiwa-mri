@@ -1,3 +1,9 @@
+require "hakoniwa/filesystem"
+require "hakoniwa/mount_point"
+require "hakoniwa/cgroup"
+require "hakoniwa/namespace"
+require "hakoniwa/capabilities"
+
 module Hakoniwa
   class Base
     attr_accessor :name,
