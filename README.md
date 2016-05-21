@@ -20,7 +20,36 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+require "hakoniwa"
+
+hakoniwa = Hakoniwa::Base.define do |config|
+  config.name "new-hakoniwa001" # to be hostname
+
+  config.cgroup["cpu.shares"] = 2048
+  config.cgroup["memory.limit_in_bytes"] = "256M"
+  config.cgroup["pid.max"] = 1024
+
+  config.chroot_to "/var/your_rootfs"
+  config.add_mount_point "/var/another/root/etc", to: "/etc", readonly: true
+  config.add_mount_point "/var/another/root/home", to: "/home"
+  config.add_mount_point "proc", to: "/proc", fs: "proc"
+
+  config.namespace.unshare "ipc"
+  config.namespace.unshare "mount"
+  config.namespace.unshare "pid"
+  config.namespace.use_netns "foobar"
+
+  config.capabilities.allow :all
+  config.capabilities.drop "CAP_SYS_TIME"
+end
+
+hakoniwa.start
+
+## or to attach running container
+
+Hakoniwa.attach hakoniwa.name
+```
 
 ## Development
 
@@ -30,7 +59,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/hakoniwa. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/udzura/hakoniwa. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 
 ## License
