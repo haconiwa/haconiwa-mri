@@ -39,6 +39,8 @@ Vagrant.configure(2) do |config|
       rbenv install 2.2.5
       rbenv global 2.2.5
       rbenv rehash
+
+      sudo yum -y install lxc lxc-templates lxc-doc lxc-libs rsync debootstrap
     fi
   SHELL
 end
