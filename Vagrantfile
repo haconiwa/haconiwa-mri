@@ -22,25 +22,33 @@ Vagrant.configure(2) do |config|
     vbox.customize ["modifyvm", :id, "--intnet2", "internal_network"]
   end
 
-  config.vm.provision "shell", inline: <<-SHELL
+  config.vm.provision "shell", inline: (<<-SHELL).gsub(/^ +/m, "")
     set -x
-    if ! test -f ~vagrant/.rbenv/version; then
-      sudo yum -y install epel-release
-      sudo yum -y update
-      sudo yum -y install libcgroup libcgroup-devel libcap-ng libcap-ng-devel
-      sudo yum -y install gcc-c++ git glibc-headers libffi-devel libxml2 libxml2-devel \
-                  libxslt libxslt-devel libyaml-devel make openssl-devel \
-                  readline readline-devel sqlite-devel zlib zlib-devel
-      git clone https://github.com/rbenv/rbenv.git ~vagrant/.rbenv
-      ( cd ~vagrant/.rbenv && src/configure && make -C src )
-      echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~vagrant/.bash_profile
-      git clone https://github.com/rbenv/ruby-build.git ~vagrant/.rbenv/plugins/ruby-build
-      . ~vagrant/.bash_profile
-      rbenv install 2.2.5
-      rbenv global 2.2.5
-      rbenv rehash
+    if ! test -f /usr/local/rbenv/version; then
+      sudo bash -l << EOS
+        yum -y install epel-release
+        yum -y update
+        yum -y install libcgroup libcgroup-devel libcap-ng libcap-ng-devel
+        yum -y install gcc-c++ git glibc-headers libffi-devel libxml2 libxml2-devel \
+          libxslt libxslt-devel libyaml-devel make openssl-devel \
+          readline readline-devel sqlite-devel zlib zlib-devel
+        git clone https://github.com/rbenv/rbenv.git /usr/local/rbenv
+        ( cd /usr/local/rbenv && sudo src/configure && sudo make -C src )
+        echo 'export PATH="/usr/local/rbenv/bin:$PATH"' | tee -a /etc/profile.d/rbenv.sh
+        echo 'eval "$(rbenv init -)"' | tee -a /etc/profile.d/rbenv.sh
+        git clone https://github.com/rbenv/ruby-build.git /usr/local/rbenv/plugins/ruby-build
+        . /etc/profile.d/rbenv.sh
+        rbenv install 2.2.5
+        rbenv global 2.2.5
+        rbenv rehash
 
-      sudo yum -y install lxc lxc-templates lxc-doc lxc-libs rsync debootstrap
+        yum -y install lxc lxc-templates lxc-doc lxc-libs rsync debootstrap
+
+        mkdir /var/hakoniwa
+        mkdir /var/hakoniwa/rootfs
+        mkdir /var/hakoniwa/bundle
+        mkdir /var/hakoniwa/user_homes
+    EOS
     fi
   SHELL
 end
