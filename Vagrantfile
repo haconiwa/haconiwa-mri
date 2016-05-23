@@ -22,8 +22,23 @@ Vagrant.configure(2) do |config|
     vbox.customize ["modifyvm", :id, "--intnet2", "internal_network"]
   end
 
-  # config.vm.provision "shell", inline: <<-SHELL
-  #   sudo yum -y install epel-release
-  #   sudo yum -y update
-  # SHELL
+  config.vm.provision "shell", inline: <<-SHELL
+    set -x
+    if ! test -f ~vagrant/.rbenv/version; then
+      sudo yum -y install epel-release
+      sudo yum -y update
+      sudo yum -y install libcgroup libcgroup-devel libcap-ng libcap-ng-devel
+      sudo yum -y install gcc-c++ git glibc-headers libffi-devel libxml2 libxml2-devel \
+                  libxslt libxslt-devel libyaml-devel make openssl-devel \
+                  readline readline-devel sqlite-devel zlib zlib-devel
+      git clone https://github.com/rbenv/rbenv.git ~vagrant/.rbenv
+      ( cd ~vagrant/.rbenv && src/configure && make -C src )
+      echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~vagrant/.bash_profile
+      git clone https://github.com/rbenv/ruby-build.git ~vagrant/.rbenv/plugins/ruby-build
+      . ~vagrant/.bash_profile
+      rbenv install 2.2.5
+      rbenv global 2.2.5
+      rbenv rehash
+    fi
+  SHELL
 end
