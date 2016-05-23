@@ -3,6 +3,7 @@ require "hakoniwa/mount_point"
 require "hakoniwa/cgroup"
 require "hakoniwa/namespace"
 require "hakoniwa/capabilities"
+require "hakoniwa/runners"
 
 module Hakoniwa
   class Base
@@ -31,5 +32,10 @@ module Hakoniwa
     def add_mount_point(point, options)
       self.filesystem.mount_points << MountPoint.new(point, options)
     end
+
+    def start(init_command='/sbin/init')
+      Runners::Linux.run(self, init_command)
+    end
+    alias run start
   end
 end

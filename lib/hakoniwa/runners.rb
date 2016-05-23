@@ -1,5 +1,5 @@
 module Hakoniwa
-  class Runners
+  module Runners
   end
 end
 

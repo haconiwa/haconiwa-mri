@@ -6,6 +6,7 @@ module Hakoniwa
     attr_accessor :chroot, :mount_points
 
     def mount_all!
+      Dir.chdir "/"
       system "mount --make-private /"
 
       mount_points.each do |mount|

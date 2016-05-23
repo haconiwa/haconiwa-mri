@@ -8,6 +8,7 @@ module Hakoniwa::Runners
     def self.run(base, init_command)
       fork {
         unshare(CLONE_NEWNS)
+        system "readlink /proc/$$/ns/mnt"
 
         base.filesystem.mount_all!
 
@@ -17,6 +18,7 @@ module Hakoniwa::Runners
       }
 
       puts "New container: is OK?"
+      system "readlink /proc/$$/ns/mnt"
       loop {} # to be in front
     end
 
