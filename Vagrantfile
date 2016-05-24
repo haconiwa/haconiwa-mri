@@ -44,11 +44,11 @@ Vagrant.configure(2) do |config|
 
         yum -y install lxc lxc-templates lxc-doc lxc-libs rsync debootstrap
 
-        mkdir /var/hakoniwa
-        mkdir /var/hakoniwa/root
-        mkdir /var/hakoniwa/rootfs
-        mkdir /var/hakoniwa/bundle
-        mkdir /var/hakoniwa/user_homes
+        mkdir /var/haconiwa
+        mkdir /var/haconiwa/root
+        mkdir /var/haconiwa/rootfs
+        mkdir /var/haconiwa/bundle
+        mkdir /var/haconiwa/user_homes
     EOS
     fi
   SHELL
