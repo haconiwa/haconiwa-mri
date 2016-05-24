@@ -7,11 +7,15 @@ haconiwa = Haconiwa::Base.define do |config|
   config.add_mount_point "/var/haconiwa/rootfs", to: root, readonly: true
   config.add_mount_point "/lib64", to: root.join("lib64"), readonly: true
   config.add_mount_point "/usr/bin", to: root.join("usr/bin"), readonly: true
-  config.add_mount_point "/var/haconiwa/user_homes/haconiwa-test001/home/haconiwa", to: root.join("home/haconiwa")
-  config.add_mount_point "proc", to: root.join("proc"), fs: "proc"
+  config.add_mount_point "tmpfs", to: root.join("tmp"), fs: "tmpfs"
+  config.add_mount_point "/var/haconiwa/user_homes/hakoniwa-test001/home/hakoniwa", to: root.join("home/hakoniwa")
+  config.mount_independent_procfs
   config.chroot_to root
 
-  # config.namespace.unshare "mount"
+  config.namespace.unshare "mount"
+  config.namespace.unshare "ipc"
+  config.namespace.unshare "uts"
+  config.namespace.unshare "pid"
 end
 
 haconiwa.start("/bin/bash")

@@ -30,7 +30,13 @@ module Haconiwa
     end
 
     def add_mount_point(point, options)
+      self.namespace.unshare "mount"
       self.filesystem.mount_points << MountPoint.new(point, options)
+    end
+
+    def mount_independent_procfs
+      self.namespace.unshare "mount"
+      self.filesystem.mount_independent_procfs = true
     end
 
     def start(init_command='/sbin/init')
