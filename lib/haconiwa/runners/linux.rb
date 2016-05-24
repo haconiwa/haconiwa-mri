@@ -6,9 +6,9 @@ module Haconiwa::Runners
     CLONE_NEWNS = 0x00020000
 
     def self.run(base, init_command)
-      fork {
+      container = fork {
         unshare(CLONE_NEWNS)
-        system "readlink /proc/$$/ns/mnt"
+        #system "readlink /proc/$$/ns/mnt"
 
         base.filesystem.mount_all!
 
@@ -17,9 +17,10 @@ module Haconiwa::Runners
         exec init_command
       }
 
-      puts "New container: is OK?"
-      system "readlink /proc/$$/ns/mnt"
-      loop {} # to be in front
+      puts "New container: PID = #{container}"
+
+      Process.waitpid container
+      puts "Successfully exit container."
     end
 
     def self.unshare(flag)
