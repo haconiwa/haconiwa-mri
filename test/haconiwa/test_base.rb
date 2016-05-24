@@ -1,7 +1,7 @@
 class TestBase < Test::Unit::TestCase
   def test_define
-    hakoniwa = Hakoniwa::Base.define do |config|
-      config.name = "new-hakoniwa001"
+    haconiwa = Haconiwa::Base.define do |config|
+      config.name = "new-haconiwa001"
 
       config.cgroup["cpu.shares"] = 2048
       config.cgroup["memory.limit_in_bytes"] = "256M"
@@ -21,6 +21,6 @@ class TestBase < Test::Unit::TestCase
       config.capabilities.drop "CAP_SYS_TIME"
     end
 
-    assert { hakoniwa.name == "new-hakoniwa001" }
+    assert { haconiwa.name == "new-haconiwa001" }
   end
 end

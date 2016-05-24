@@ -1,4 +1,4 @@
-module Hakoniwa
+module Haconiwa
   class MountPoint
     def initialize(point, options)
       @src = point

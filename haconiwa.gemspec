@@ -1,17 +1,17 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'hakoniwa/version'
+require 'haconiwa/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "hakoniwa"
-  spec.version       = Hakoniwa::VERSION
+  spec.name          = "haconiwa"
+  spec.version       = Haconiwa::VERSION
   spec.authors       = ["Uchio KONDO"]
   spec.email         = ["udzura@udzura.jp"]
 
   spec.summary       = %q{Ruby on Container / helper tools with DSL for your handmade linux containers}
   spec.description   = %q{Ruby on Container / helper tools with DSL for your handmade linux containers.}
-  spec.homepage      = "https://github.com/udzura/hakoniwa"
+  spec.homepage      = "https://github.com/udzura/haconiwa"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }

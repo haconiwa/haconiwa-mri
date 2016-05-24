@@ -1,4 +1,4 @@
-module Hakoniwa
+module Haconiwa
   class Capabilities
     def initialize
       @blacklist = []

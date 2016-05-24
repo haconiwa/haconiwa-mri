@@ -1,4 +1,4 @@
-module Hakoniwa::Runners
+module Haconiwa::Runners
   # see http://d.hatena.ne.jp/hiboma/20120518/1337337393
 
   class Linux

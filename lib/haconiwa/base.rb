@@ -1,11 +1,11 @@
-require "hakoniwa/filesystem"
-require "hakoniwa/mount_point"
-require "hakoniwa/cgroup"
-require "hakoniwa/namespace"
-require "hakoniwa/capabilities"
-require "hakoniwa/runners"
+require "haconiwa/filesystem"
+require "haconiwa/mount_point"
+require "haconiwa/cgroup"
+require "haconiwa/namespace"
+require "haconiwa/capabilities"
+require "haconiwa/runners"
 
-module Hakoniwa
+module Haconiwa
   class Base
     attr_accessor :name,
                   :filesystem,

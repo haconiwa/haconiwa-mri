@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    hakoniwa (0.1.0)
+    haconiwa (0.1.0)
       ffi
 
 GEM
@@ -29,7 +29,7 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 1.11)
-  hakoniwa!
+  haconiwa!
   power_assert
   pry
   rake (~> 10.0)

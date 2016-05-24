@@ -1,4 +1,4 @@
-module Hakoniwa
+module Haconiwa
   class Namespace
     def initialize
       @use_ns = []

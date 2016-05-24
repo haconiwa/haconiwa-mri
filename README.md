@@ -1,6 +1,6 @@
-# Hakoniwa
+# Haconiwa
 
-[![Build Status](https://travis-ci.org/udzura/hakoniwa.svg?branch=master)](https://travis-ci.org/udzura/hakoniwa)
+[![Build Status](https://travis-ci.org/udzura/haconiwa.svg?branch=master)](https://travis-ci.org/udzura/haconiwa)
 
 Ruby on Container / helper tools with DSL for your handmade linux containers
 
@@ -9,7 +9,7 @@ Ruby on Container / helper tools with DSL for your handmade linux containers
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'hakoniwa'
+gem 'haconiwa'
 ```
 
 And then execute:
@@ -18,15 +18,15 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install hakoniwa
+    $ gem install haconiwa
 
 ## Usage
 
 ```ruby
-require "hakoniwa"
+require "haconiwa"
 
-hakoniwa = Hakoniwa::Base.define do |config|
-  config.name = "new-hakoniwa001" # to be hostname
+haconiwa = Haconiwa::Base.define do |config|
+  config.name = "new-haconiwa001" # to be hostname
 
   config.cgroup["cpu.shares"] = 2048
   config.cgroup["memory.limit_in_bytes"] = "256M"
@@ -46,11 +46,11 @@ hakoniwa = Hakoniwa::Base.define do |config|
   config.capabilities.drop "CAP_SYS_TIME"
 end
 
-hakoniwa.start
+haconiwa.start
 
 ## or to attach running container
 
-Hakoniwa.attach hakoniwa.name
+Haconiwa.attach haconiwa.name
 ```
 
 ## Development
@@ -61,7 +61,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/udzura/hakoniwa. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/udzura/haconiwa. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 
 ## License

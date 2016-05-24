@@ -1,4 +1,4 @@
-module Hakoniwa
+module Haconiwa
   class CGroup
     def initialize
       @groups = {}

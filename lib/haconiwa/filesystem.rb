@@ -1,4 +1,4 @@
-module Hakoniwa
+module Haconiwa
   class Filesystem
     def initialize
       @mount_points = []
