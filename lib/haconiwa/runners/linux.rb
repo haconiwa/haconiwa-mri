@@ -8,6 +8,7 @@ module Haconiwa::Runners
     def self.run(base, init_command)
       container = fork {
         base.namespace.apply!
+        base.cgroup.register_all!(to: base.name)
 
         base.filesystem.mount_all!
 
@@ -33,6 +34,7 @@ module Haconiwa::Runners
         end
       }
 
+      Haconiwa::SmallCgroup.register_at_exit(pid: container, name: base.name, dirs: base.cgroup.to_dirs)
       puts "New container: PID = #{container}"
 
       Process.waitpid container

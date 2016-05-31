@@ -22,6 +22,7 @@ module Haconiwa
       @cgroup = CGroup.new
       @namespace = Namespace.new
       @capabilities = Capabilities.new
+      @name = "haconiwa-#{Time.now.to_i}"
     end
 
     # aliases

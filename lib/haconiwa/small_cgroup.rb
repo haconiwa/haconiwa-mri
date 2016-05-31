@@ -6,7 +6,7 @@ module Haconiwa
     class << self
       attr_accessor :fs_root
 
-      def register_at_exit(pid, name, dirs)
+      def register_at_exit(pid: nil, name: nil, dirs: nil)
         at_exit do
           dirs.each do |dir|
             begin
