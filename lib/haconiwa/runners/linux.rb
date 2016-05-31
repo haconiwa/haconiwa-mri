@@ -1,5 +1,6 @@
 require 'tempfile'
 require 'fileutils'
+require 'bundler'
 
 module Haconiwa::Runners
   # see http://d.hatena.ne.jp/hiboma/20120518/1337337393
@@ -28,9 +29,11 @@ module Haconiwa::Runners
         FileUtils.chmod 0700, wrapper.path
 
         if base.namespace.use_pid_ns
-          exec "unshare", "--pid", "--", wrapper.path, init_command
+          Bundler.with_clean_env {
+            exec "unshare", "--pid", "--", wrapper.path, init_command
+          }
         else
-          exec wrapper.path, init_command
+          Bundler.with_clean_env { exec wrapper.path, init_command }
         end
       }
 
