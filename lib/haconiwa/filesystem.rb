@@ -2,10 +2,10 @@ module Haconiwa
   class Filesystem
     def initialize
       @mount_points = []
-      @mount_procfs = false
+      @mount_independent_procfs = false
     end
     attr_accessor :chroot, :mount_points,
-                  :mount_procfs
+                  :mount_independent_procfs
 
     def mount_all!
       Dir.chdir "/"

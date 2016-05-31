@@ -18,7 +18,7 @@ module Haconiwa::Runners
 
         wrapper.puts "#!/bin/bash"
         wrapper.puts "/bin/bash -c \""
-        if base.filesystem.mount_procfs
+        if base.filesystem.mount_independent_procfs
           wrapper.puts "mount -t proc proc /proc;"
         end
         wrapper.puts "exec $1;"
