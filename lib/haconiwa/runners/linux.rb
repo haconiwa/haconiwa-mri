@@ -28,6 +28,8 @@ module Haconiwa::Runners
         wrapper.close
         FileUtils.chmod 0700, wrapper.path
 
+        Haconiwa::Base.sethostname(base.name)
+
         base.capabilities.apply!
 
         if base.namespace.use_pid_ns

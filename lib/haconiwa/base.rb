@@ -45,4 +45,15 @@ module Haconiwa
     end
     alias run start
   end
+
+  module Utils
+    # $ ausyscall --dump | grep hostname
+    # 170     sethostname
+
+    def sethostname(name)
+      Kernel.syscall(170, name, name.length)
+    end
+  end
+
+  Base.extend Utils
 end
