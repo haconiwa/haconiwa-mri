@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+require 'haconiwa'
+
+subcommand = ARGV[0]
+case subcommand
+when "version"
+  puts Haconiwa::VERSION
+when "run"
+end
