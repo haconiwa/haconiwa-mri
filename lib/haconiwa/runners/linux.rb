@@ -6,9 +6,11 @@ module Haconiwa::Runners
   # see http://d.hatena.ne.jp/hiboma/20120518/1337337393
 
   class Linux
-    def self.run(base, init_command=nil)
+    def self.run(base, init_command=[])
       container = fork {
-        init_command ||= base.init_command
+        if init_command.empty?
+          init_command = Array(base.init_command)
+        end
 
         base.namespace.apply!
         base.cgroup.register_all!(to: base.name)
@@ -21,12 +23,12 @@ module Haconiwa::Runners
         wrapper = Tempfile.open("haconiwa-wrapper-#{$$}-#{Time.now.to_i}.sh")
 
         wrapper.puts "#!/bin/bash"
-        wrapper.puts "/bin/bash -c \""
+        wrapper.puts "/bin/bash -c '"
         if base.filesystem.mount_independent_procfs
           wrapper.puts "mount -t proc proc /proc;"
         end
-        wrapper.puts "exec $1;"
-        wrapper.puts "\""
+        wrapper.puts "exec $@;"
+        wrapper.puts "' -- \"$@\""
         wrapper.close
         FileUtils.chmod 0700, wrapper.path
 
@@ -36,10 +38,10 @@ module Haconiwa::Runners
 
         if base.namespace.use_pid_ns
           Bundler.with_clean_env {
-            exec "unshare", "--pid", "--", wrapper.path, init_command
+            exec "unshare", "--pid", "--", wrapper.path, *init_command
           }
         else
-          Bundler.with_clean_env { exec wrapper.path, init_command }
+          Bundler.with_clean_env { exec wrapper.path, *init_command }
         end
       }
 

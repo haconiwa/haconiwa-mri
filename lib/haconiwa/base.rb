@@ -41,7 +41,7 @@ module Haconiwa
       self.filesystem.mount_independent_procfs = true
     end
 
-    def start(init_command='/sbin/init')
+    def start(*init_command)
       Runners::Linux.run(self, init_command)
     end
     alias run start
