@@ -8,6 +8,7 @@ require "haconiwa/runners"
 module Haconiwa
   class Base
     attr_accessor :name,
+                  :init_command,
                   :filesystem,
                   :cgroup,
                   :namespace,
@@ -44,6 +45,10 @@ module Haconiwa
       Runners::Linux.run(self, init_command)
     end
     alias run start
+  end
+
+  def self.define(&b)
+    Base.define(&b)
   end
 
   module Utils

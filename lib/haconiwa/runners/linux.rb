@@ -6,8 +6,10 @@ module Haconiwa::Runners
   # see http://d.hatena.ne.jp/hiboma/20120518/1337337393
 
   class Linux
-    def self.run(base, init_command)
+    def self.run(base, init_command=nil)
       container = fork {
+        init_command ||= base.init_command
+
         base.namespace.apply!
         base.cgroup.register_all!(to: base.name)
 
@@ -44,8 +46,12 @@ module Haconiwa::Runners
       Haconiwa::SmallCgroup.register_at_exit(pid: container, name: base.name, dirs: base.cgroup.to_dirs)
       puts "New container: PID = #{container}"
 
-      Process.waitpid container
-      puts "Successfully exit container."
+      res = Process.waitpid2 container
+      if res[1].success?
+        puts "Successfully exit container."
+      else
+        puts "Container exited with status code <#{res[1].to_i}>."
+      end
     end
   end
 end

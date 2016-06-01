@@ -1,9 +1,11 @@
 #!/usr/bin/env ruby
 require 'haconiwa'
+require 'haconiwa/cli'
 
 subcommand = ARGV[0]
 case subcommand
 when "version"
   puts Haconiwa::VERSION
 when "run"
+  Haconiwa::Cli.run(ARGV[1..-1])
 end
