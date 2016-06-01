@@ -45,14 +45,37 @@ module Haconiwa::Runners
         end
       }
 
+      sleep 0.1 # The magic
       Haconiwa::SmallCgroup.register_at_exit(pid: container, name: base.name, dirs: base.cgroup.to_dirs)
-      puts "New container: PID = #{container}"
+      real_container_pid = if base.namespace.use_pid_ns
+                             find_by_ppid(container)
+                           else
+                             container
+                           end
+      File.open(base.container_pid_file, "w") {|pid| pid.write real_container_pid }
+      puts "New container: PID = #{real_container_pid}"
 
       res = Process.waitpid2 container
       if res[1].success?
         puts "Successfully exit container."
       else
         puts "Container exited with status code <#{res[1].to_i}>."
+      end
+
+      at_exit { FileUtils.rm_f base.container_pid_file }
+    end
+
+    private
+    def self.find_by_ppid(ppid)
+      s = Dir.glob('/proc/*/stat')
+             .find {|stat|
+               next unless stat =~ /\d/
+               File.read(stat).split[3].to_i == ppid
+             }
+      if s
+        s.scan(/\d+/).first.to_i
+      else
+        raise("Process that has ppid #{ppid} not found. Somthing is wrong.")
       end
     end
   end

@@ -9,6 +9,7 @@ module Haconiwa
   class Base
     attr_accessor :name,
                   :init_command,
+                  :container_pid_file,
                   :filesystem,
                   :cgroup,
                   :namespace,
@@ -24,6 +25,7 @@ module Haconiwa
       @namespace = Namespace.new
       @capabilities = Capabilities.new
       @name = "haconiwa-#{Time.now.to_i}"
+      @container_pid_file = "/var/run/haconiwa-#{@name}.pid"
     end
 
     # aliases
