@@ -28,6 +28,8 @@ module Haconiwa::Runners
         wrapper.close
         FileUtils.chmod 0700, wrapper.path
 
+        base.capabilities.apply!
+
         if base.namespace.use_pid_ns
           Bundler.with_clean_env {
             exec "unshare", "--pid", "--", wrapper.path, init_command
