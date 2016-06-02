@@ -10,6 +10,7 @@ module Haconiwa
     attr_accessor :name,
                   :init_command,
                   :container_pid_file,
+                  :pid,
                   :filesystem,
                   :cgroup,
                   :namespace,
@@ -26,6 +27,7 @@ module Haconiwa
       @capabilities = Capabilities.new
       @name = "haconiwa-#{Time.now.to_i}"
       @container_pid_file = nil
+      @pid = nil
     end
 
     # aliases

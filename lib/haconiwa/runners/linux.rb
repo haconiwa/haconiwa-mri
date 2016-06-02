@@ -83,11 +83,10 @@ module Haconiwa::Runners
       FileUtils.chmod 0700, wrapper.path
 
       runner = fork {
+        base.pid ||= File.read(base.container_pid_file).to_i
+
         # base.cgroup.enter(name: base.name)
-        base.namespace.enter(
-          pid: File.read(base.container_pid_file).to_i,
-          wrapper_path: wrapper.path
-        )
+        base.namespace.enter(pid: base.pid, wrapper_path: wrapper.path)
       }
 
       puts "Attached to contanier: Runner PID = #{runner}"

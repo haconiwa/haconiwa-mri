@@ -6,7 +6,16 @@ module Haconiwa
     end
 
     def self.attach(args)
+      require 'optparse'
+      opt = OptionParser.new
+      pid = nil
+
+      opt.program_name = "haconiwa attach"
+      opt.on('-t', '--target PID', "Container's PID to attatch. If not set, use pid file of definition") {|v| pid = v }
+      args = opt.parse(args)
+
       base, exe = get_script_and_eval(args)
+      base.pid = pid if pid
       base.attach(*exe)
     end
 
