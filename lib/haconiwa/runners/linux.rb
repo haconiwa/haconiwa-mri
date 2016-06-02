@@ -71,25 +71,25 @@ module Haconiwa::Runners
         run_command << "/bin/bash"
       end
 
+      wrapper = Tempfile.open("haconiwa-attacher-#{$$}-#{Time.now.to_i}.sh")
+
+      wrapper.puts "#!/bin/bash"
+      wrapper.puts "chroot #{base.filesystem.chroot} bash -c '"
+      wrapper.puts "cd / ;"
+      wrapper.puts Shellwords.shelljoin(["exec", *run_command]).gsub(/'/, %<'"'"'>)
+      wrapper.puts "'"
+      wrapper.close
+      FileUtils.chmod 0700, wrapper.path
+
       runner = fork {
-        base.namespace.enter(pid: File.read(base.container_pid_file).to_i)
         # base.cgroup.enter(name: base.name)
-        Dir.chroot base.filesystem.chroot
-        Dir.chdir "/"
-
-        wrapper = Tempfile.open("haconiwa-attacher-#{$$}-#{Time.now.to_i}.sh")
-
-        wrapper.puts "#!/bin/bash"
-        wrapper.puts Shellwords.shelljoin(run_command)
-        wrapper.close
-        FileUtils.chmod 0700, wrapper.path
-
-        exec wrapper.path
+        base.namespace.enter(
+          pid: File.read(base.container_pid_file).to_i,
+          wrapper_path: wrapper.path
+        )
       }
 
-      sleep 0.1
-      attached = find_by_ppid(container)
-      puts "Attached to contanier: Runner PID = #{attached}"
+      puts "Attached to contanier: Runner PID = #{runner}"
 
       res = Process.waitpid2 runner
       if res[1].success?

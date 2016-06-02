@@ -44,13 +44,13 @@ module Haconiwa
     end
 
     def start(*init_command)
-      self.container_pid_file = default_container_pid_file
+      self.container_pid_file ||= default_container_pid_file
       Runners::Linux.run(self, init_command)
     end
     alias run start
 
     def attach(*run_command)
-      self.container_pid_file = default_container_pid_file
+      self.container_pid_file ||= default_container_pid_file
       Runners::Linux.attach(self, run_command)
     end
 

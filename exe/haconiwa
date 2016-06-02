@@ -8,4 +8,17 @@ when "version"
   puts Haconiwa::VERSION
 when "run"
   Haconiwa::Cli.run(ARGV[1..-1])
+when "attach"
+  Haconiwa::Cli.attach(ARGV[1..-1])
+else
+  STDERR.puts <<-EOH
+Usage of #{$0}:
+    run - Run the container with init command
+        Example: haconiwa run path/to/definition.haco -- /bin/your command
+    attach - Attach to the existing container with command
+        Example: haconiwa attach path/to/definition.haco -- /bin/your command
+
+Version:
+    #{Haconiwa::VERSION}
+  EOH
 end

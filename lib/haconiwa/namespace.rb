@@ -26,11 +26,11 @@ module Haconiwa
       "uts"    => CLONE_NEWUTS,
     }
 
-    FLAG_TO_LINK = {
+    FLAG_TO_PARAM = {
       CLONE_NEWCGROUP => "cgroup",
       CLONE_NEWIPC    => "ipc",
       CLONE_NEWNET    => "net",
-      CLONE_NEWNS     => "mnt",
+      CLONE_NEWNS     => "mount",
       CLONE_NEWPID    => "pid",
       CLONE_NEWUSER   => "user",
       CLONE_NEWUTS    => "uts",
@@ -66,21 +66,18 @@ module Haconiwa
       Kernel.syscall(UNSHARE, flag)
     end
 
-    def enter(pid: nil)
-      fds = use_ns_all.map do |flag|
-        nslink = File.open("/proc/#{pid}/ns/#{FLAG_TO_LINK[flag]}", 'r')
-        [flag, fd]
-      end
-      fds.each do |(flag, fd)|
-        Kernel.syscall(SETNS, fd.fileno, flag)
-        fd.close
-      end
+    def enter(pid: nil, wrapper_path: nil)
+      ns_params = use_ns_all.map{|f| "--#{FLAG_TO_PARAM[f]}" }
+      exec "nsenter",
+           "--target", "#{pid}",
+           *ns_params,
+           "--", wrapper_path.to_s
     end
 
     private
 
     def use_ns_all
-      @use_ns + (@use_pid_ns ? [CLONE_NEWPID] : [])
+      @use_ns.uniq + (@use_pid_ns ? [CLONE_NEWPID] : [])
     end
 
     def to_ns_flag
