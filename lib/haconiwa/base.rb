@@ -25,7 +25,7 @@ module Haconiwa
       @namespace = Namespace.new
       @capabilities = Capabilities.new
       @name = "haconiwa-#{Time.now.to_i}"
-      @container_pid_file = "/var/run/haconiwa-#{@name}.pid"
+      @container_pid_file = nil
     end
 
     # aliases
@@ -44,9 +44,19 @@ module Haconiwa
     end
 
     def start(*init_command)
+      self.container_pid_file = default_container_pid_file
       Runners::Linux.run(self, init_command)
     end
     alias run start
+
+    def attach(*run_command)
+      self.container_pid_file = default_container_pid_file
+      Runners::Linux.attach(self, run_command)
+    end
+
+    def default_container_pid_file
+      "/var/run/haconiwa-#{@name}.pid"
+    end
   end
 
   def self.define(&b)
