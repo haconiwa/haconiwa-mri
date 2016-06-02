@@ -55,7 +55,7 @@ module Haconiwa::Runners
                            end
       File.open(base.container_pid_file, "w") {|pid| pid.write real_container_pid }
       Signal.trap(:INT) { Process.kill :TERM, container }
-      puts "New container: PID = #{real_container_pid}"
+      puts "New container: Name = #{base.name}, PID = #{real_container_pid}"
 
       res = Process.waitpid2 container
       if res[1].success?
