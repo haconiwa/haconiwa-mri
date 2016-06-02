@@ -85,8 +85,8 @@ module Haconiwa::Runners
       runner = fork {
         base.pid ||= File.read(base.container_pid_file).to_i
 
-        # base.cgroup.enter(name: base.name)
-        base.namespace.enter(pid: base.pid, wrapper_path: wrapper.path)
+        base.cgroup.attach(to: base.name)
+        Bundler.with_clean_env { base.namespace.enter(pid: base.pid, wrapper_path: wrapper.path) }
       }
 
       puts "Attached to contanier: Runner PID = #{runner}"

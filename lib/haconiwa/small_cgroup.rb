@@ -31,8 +31,13 @@ module Haconiwa
     def activate(dir)
       dirroot = root_of(dir)
       FileUtils.mkdir_p dirroot
-      append_write dirroot.join("tasks"), self.pid
+      attach(dir)
       @active_dirs << dir
+    end
+
+    def attach(dir)
+      dirroot = root_of(dir)
+      append_write dirroot.join("tasks"), self.pid
     end
 
     def activated?(dir)

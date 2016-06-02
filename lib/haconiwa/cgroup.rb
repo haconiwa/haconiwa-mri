@@ -18,11 +18,19 @@ module Haconiwa
     def to_dirs
       groups.keys.map{|k| k.split('.').first }.uniq
     end
+    alias dirs to_dirs
 
     def register_all!(to: nil)
       cg = SmallCgroup.new(name: to)
       groups.each do |k, v|
         cg.register k, v
+      end
+    end
+
+    def attach(to: nil)
+      cg = SmallCgroup.new(name: to)
+      dirs.each do |dir|
+        cg.attach(dir)
       end
     end
   end

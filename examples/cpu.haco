@@ -1,5 +1,4 @@
-require 'haconiwa'
-require 'pathname'
+# -*- mode: ruby -*-
 haconiwa = Haconiwa::Base.define do |config|
   config.name = "cpu-quota001" # to be hostname
 
@@ -20,5 +19,3 @@ haconiwa = Haconiwa::Base.define do |config|
   config.cgroup["cpu.cfs_period_us"] = 100000
   config.cgroup["cpu.cfs_quota_us"]  =  30000
 end
-
-haconiwa.start("/bin/bash")
