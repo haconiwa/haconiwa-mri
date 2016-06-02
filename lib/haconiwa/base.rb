@@ -14,7 +14,8 @@ module Haconiwa
                   :filesystem,
                   :cgroup,
                   :namespace,
-                  :capabilities
+                  :capabilities,
+                  :attached_capabilities
 
     def self.define(&b)
       new.tap(&b)
@@ -25,6 +26,7 @@ module Haconiwa
       @cgroup = CGroup.new
       @namespace = Namespace.new
       @capabilities = Capabilities.new
+      @attached_capabilities = nil
       @name = "haconiwa-#{Time.now.to_i}"
       @container_pid_file = nil
       @pid = nil

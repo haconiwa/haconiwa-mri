@@ -85,6 +85,10 @@ module Haconiwa::Runners
       runner = fork {
         base.pid ||= File.read(base.container_pid_file).to_i
 
+        if base.attached_capabilities
+          base.attached_capabilities.apply!
+        end
+
         base.cgroup.attach(to: base.name)
         Bundler.with_clean_env { base.namespace.enter(pid: base.pid, wrapper_path: wrapper.path) }
       }

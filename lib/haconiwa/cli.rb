@@ -10,15 +10,25 @@ module Haconiwa
       opt = OptionParser.new
       pid = nil
       name = nil
+      allow = nil
+      drop = nil
 
       opt.program_name = "haconiwa attach"
       opt.on('-t', '--target PID', "Container's PID to attatch. If not set, use pid file of definition") {|v| pid = v }
       opt.on('-n', '--name CONTAINER_NAME', "Container's name. Set if the name is dynamically defined") {|v| name = v }
+      opt.on('--allow CAPS[,CAPS...]', "Capabilities to allow attached process. Independent container's own caps") {|v| allow = v.split(',') }
+      opt.on('--drop CAPS[,CAPS...]', "Capabilities to drop from attached process. Independent container's own caps") {|v| drop = v.split(',') }
       args = opt.parse(args)
 
       base, exe = get_script_and_eval(args)
       base.pid = pid if pid
       base.name = name if name
+      if allow || drop
+        base.attached_capabilities = Capabilities.new
+        base.attached_capabilities.allow(*allow) if allow
+        base.attached_capabilities.drop(*drop) if drop
+      end
+
       base.attach(*exe)
     end
 
