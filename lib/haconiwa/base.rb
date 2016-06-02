@@ -28,6 +28,7 @@ module Haconiwa
       @capabilities = Capabilities.new
       @attached_capabilities = nil
       @name = "haconiwa-#{Time.now.to_i}"
+      @init_command = "/bin/bash" # FIXME: maybe /sbin/init is better
       @container_pid_file = nil
       @pid = nil
     end
