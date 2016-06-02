@@ -1,6 +1,7 @@
 module Haconiwa
   class Namespace
     UNSHARE = 272
+    SETNS   = 308
 
     # from linux/sched.h
 
@@ -23,6 +24,16 @@ module Haconiwa
       "pid"    => CLONE_NEWPID,
       "user"   => CLONE_NEWUSER,
       "uts"    => CLONE_NEWUTS,
+    }
+
+    FLAG_TO_LINK = {
+      CLONE_NEWCGROUP => "cgroup",
+      CLONE_NEWIPC    => "ipc",
+      CLONE_NEWNET    => "net",
+      CLONE_NEWNS     => "mnt",
+      CLONE_NEWPID    => "pid",
+      CLONE_NEWUSER   => "user",
+      CLONE_NEWUTS    => "uts",
     }
 
     def initialize
@@ -55,7 +66,22 @@ module Haconiwa
       Kernel.syscall(UNSHARE, flag)
     end
 
+    def enter(pid: nil)
+      fds = use_ns_all.map do |flag|
+        nslink = File.open("/proc/#{pid}/ns/#{FLAG_TO_LINK[flag]}", 'r')
+        [flag, fd]
+      end
+      fds.each do |(flag, fd)|
+        Kernel.syscall(SETNS, fd.fileno, flag)
+        fd.close
+      end
+    end
+
     private
+
+    def use_ns_all
+      @use_ns + (@use_pid_ns ? [CLONE_NEWPID] : [])
+    end
 
     def to_ns_flag
       @use_ns.inject(0x00000000) { |dst, flag|

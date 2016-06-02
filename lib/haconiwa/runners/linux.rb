@@ -1,5 +1,6 @@
 require 'tempfile'
 require 'fileutils'
+require 'shellwords'
 require 'bundler'
 
 module Haconiwa::Runners
@@ -63,6 +64,39 @@ module Haconiwa::Runners
       end
 
       at_exit { FileUtils.rm_f base.container_pid_file }
+    end
+
+    def self.attach(base, run_command=[])
+      if run_command.empty?
+        run_command << "/bin/bash"
+      end
+
+      runner = fork {
+        base.namespace.enter(pid: File.read(base.container_pid_file).to_i)
+        # base.cgroup.enter(name: base.name)
+        Dir.chroot base.filesystem.chroot
+        Dir.chdir "/"
+
+        wrapper = Tempfile.open("haconiwa-attacher-#{$$}-#{Time.now.to_i}.sh")
+
+        wrapper.puts "#!/bin/bash"
+        wrapper.puts Shellwords.shelljoin(run_command)
+        wrapper.close
+        FileUtils.chmod 0700, wrapper.path
+
+        exec wrapper.path
+      }
+
+      sleep 0.1
+      attached = find_by_ppid(container)
+      puts "Attached to contanier: Runner PID = #{attached}"
+
+      res = Process.waitpid2 runner
+      if res[1].success?
+        puts "Successfully exit."
+      else
+        puts "Attached process exited with status code <#{res[1].to_i}>."
+      end
     end
 
     private
