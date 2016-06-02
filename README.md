@@ -1,6 +1,6 @@
 # Haconiwa
 
-[![Build Status](https://travis-ci.org/udzura/haconiwa.svg?branch=master)](https://travis-ci.org/udzura/haconiwa)
+[![Build Status](https://travis-ci.org/udzura/haconiwa.svg?branch=master)](https://travis-ci.org/udzura/haconiwa) [![Gem Version](https://badge.fury.io/rb/haconiwa.svg)](https://badge.fury.io/rb/haconiwa)
 
 Ruby on Container / helper tools with DSL for your handmade linux containers
 
